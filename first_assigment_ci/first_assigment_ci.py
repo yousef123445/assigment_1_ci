@@ -164,6 +164,8 @@ while True:
 
 # Run the genetic algorithm
      genetic_algorithm(runs, generation, ch_length, pCross, pMut,cross_over_point)
+ if x==4:
+      break
 
     
      

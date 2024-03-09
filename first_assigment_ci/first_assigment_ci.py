@@ -1,14 +1,15 @@
-#myname : youssef mohamed mohmed ezzat
+ #myname : youssef mohamed mohmed ezzat
 #id : 20200688
 from hmac import new
 import random
 import numpy as np
+#generate_population
 
 def generate_chromosomes(num_chromosomes, chromosome_length):
     chromosomes = [''.join([str(random.randint(0, 1)) for _ in range(chromosome_length)]) 
                    for _ in range(num_chromosomes)]
     return chromosomes
-
+#evalute fitness 
 def evaluate_fitness(chromosomes):
     fitness_scores = []
     target_chromosome = '11111'
@@ -18,28 +19,29 @@ def evaluate_fitness(chromosomes):
     return fitness_scores
 
 
-
+# evalute probabality 
 def probability(fitness):
     total_fitness = sum(fitness)
     probabilities = [float(fitness[i]) / total_fitness for i in range(len(fitness))]
     return probabilities
-
+#evalute commulative 
 def cumulative(probabilities):
     cumulative_probabilities = [sum(probabilities[:i+1]) for i in range(len(probabilities))]
     return cumulative_probabilities
+#select bt routtle by cummaltive porobabilties and switch for printing random or not 
 
 def select_byrouttle2(chromosomes, cumulative_probabilities,switch):
   
-    r = random.random()
+    random_routtle= random.random()
     if switch==True:
-         print(r)
+         print(random_routtle)
  
     for i in range(len(cumulative_probabilities)):
-        if r <= cumulative_probabilities[i]:
+        if random_routtle <= cumulative_probabilities[i]:
             return chromosomes[i]
       
 
-
+# making cross_over by any point by crosspoint for two individual
 def crossover(parent1, parent2, pCross, crossover_point):
     if random.random() < pCross:
         child_1 = parent1[:crossover_point] + parent2[crossover_point:]
@@ -48,6 +50,7 @@ def crossover(parent1, parent2, pCross, crossover_point):
         child_1 = parent1
         child_2 = parent2
     return child_1, child_2
+#make mutation 
 
 def mutation(chromosome, pMut):
     mutated_chromosome = ""
@@ -58,23 +61,26 @@ def mutation(chromosome, pMut):
         else:
             mutated_chromosome += bit
     return mutated_chromosome
+#fucntion that return best indivdual 
 
 def elitism(chromosomes, fitness_scores):
       sorted_chromose = [chromosome for _, chromosome in sorted(zip(fitness_scores, chromosomes), reverse=True)]
       top_two =  sorted_chromose[:2]
       return top_two
 
-
+# function of genetic algorithm
 def genetic_algorithm(runs, generations, ch_length, pcross, pmut,cross_over_point):
     best_fitness_history = []
     avr_fitness_history = []
     
     for j in range(runs):
+       
         chromosomes = generate_chromosomes(20, ch_length)
         max_fitness = []
         avr_fitness = []
         
         for i in range(generations):
+           
             fitnesses = evaluate_fitness(chromosomes)
             max_fitness.append(max(fitnesses))
             avr_fitness.append(sum(fitnesses) / len(fitnesses))
@@ -91,7 +97,7 @@ def genetic_algorithm(runs, generations, ch_length, pcross, pmut,cross_over_poin
                 new_population.append(mutation(offspring[0], pmut))
                 new_population.append(mutation(offspring[1], pmut))
             
-            new_population = new_population[0:18]
+            new_population = new_population[0:18]# because you have 20 generation and you want to selcet the best individual 
             best=  elitism(chromosomes, fitnesses)         
             new_population.extend(best)
             chromosomes = new_population.copy()
@@ -130,10 +136,10 @@ while True:
      probality =probability(fitness)
      print (" all probablity of each chromose : ",probability(fitness))
      print ( "all cummulative of each chromose : ",cumulative( probality))
-     cumulative =cumulative( probality)
+     cumulatives =cumulative( probality)
      selection=[]
      for i in range(2):
-       selection.append(select_byrouttle2(chromose,cumulative,True))
+       selection.append(select_byrouttle2(chromose,cumulatives,True))
 
        print ("  parent ",i+1 ," for making mutation and cross over ",selection[i])
      eltisim=elitism(chromose,fitness)
@@ -164,6 +170,18 @@ while True:
 
 # Run the genetic algorithm
      genetic_algorithm(runs, generation, ch_length, pCross, pMut,cross_over_point)
+ if x==3 :
+     print("\t \t \t the steps of genetic algorithm : ")
+     print("1:generate N number of chromosomes with length L")
+     print("2:compute the fitness for all chromosomes according to the number of 1s") 
+     print("3:cumpute their relative fitness and cumulative relative fitness")
+     print("4:generate 2 random numbers to select 2 chromosomes to become parents according to their cumulative relative fitness")
+     print("5:generate their offspring using one point crossover with crossover point and pcross")
+     print("6:use mutation on the offspring bits using pmut")
+     print("7:add the 2 offsprings to the population")
+     print("8: use elitism to choose best 2 individuals to keep them on next population ")
+     print("9:-repeat numbers of runs  from step 2 for M generations\n\n\n ")
+    
  if x==4:
       break
 

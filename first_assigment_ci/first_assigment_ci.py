@@ -1,14 +1,15 @@
-#myname : youssef mohamed mohmed ezzat
+ #myname : youssef mohamed mohmed ezzat
 #id : 20200688
 from hmac import new
 import random
 import numpy as np
+#generate_population
 
 def generate_chromosomes(num_chromosomes, chromosome_length):
     chromosomes = [''.join([str(random.randint(0, 1)) for _ in range(chromosome_length)]) 
                    for _ in range(num_chromosomes)]
     return chromosomes
-
+#evalute fitness 
 def evaluate_fitness(chromosomes):
     fitness_scores = []
     target_chromosome = '11111'
@@ -18,15 +19,16 @@ def evaluate_fitness(chromosomes):
     return fitness_scores
 
 
-
+# evalute probabality 
 def probability(fitness):
     total_fitness = sum(fitness)
     probabilities = [float(fitness[i]) / total_fitness for i in range(len(fitness))]
     return probabilities
-
+#evalute commulative 
 def cumulative(probabilities):
     cumulative_probabilities = [sum(probabilities[:i+1]) for i in range(len(probabilities))]
     return cumulative_probabilities
+#select bt routtle by cummaltive porobabilties and switch for printing random or not 
 
 def select_byrouttle2(chromosomes, cumulative_probabilities,switch):
   
@@ -39,7 +41,7 @@ def select_byrouttle2(chromosomes, cumulative_probabilities,switch):
             return chromosomes[i]
       
 
-
+# making cross_over by any point by crosspoint for two individual
 def crossover(parent1, parent2, pCross, crossover_point):
     if random.random() < pCross:
         child_1 = parent1[:crossover_point] + parent2[crossover_point:]
@@ -48,6 +50,7 @@ def crossover(parent1, parent2, pCross, crossover_point):
         child_1 = parent1
         child_2 = parent2
     return child_1, child_2
+#make mutation 
 
 def mutation(chromosome, pMut):
     mutated_chromosome = ""
@@ -58,23 +61,26 @@ def mutation(chromosome, pMut):
         else:
             mutated_chromosome += bit
     return mutated_chromosome
+#fucntion that return best indivdual 
 
 def elitism(chromosomes, fitness_scores):
       sorted_chromose = [chromosome for _, chromosome in sorted(zip(fitness_scores, chromosomes), reverse=True)]
       top_two =  sorted_chromose[:2]
       return top_two
 
-
+# function of genetic algorithm
 def genetic_algorithm(runs, generations, ch_length, pcross, pmut,cross_over_point):
     best_fitness_history = []
     avr_fitness_history = []
     
     for j in range(runs):
+       
         chromosomes = generate_chromosomes(20, ch_length)
         max_fitness = []
         avr_fitness = []
         
         for i in range(generations):
+           
             fitnesses = evaluate_fitness(chromosomes)
             max_fitness.append(max(fitnesses))
             avr_fitness.append(sum(fitnesses) / len(fitnesses))

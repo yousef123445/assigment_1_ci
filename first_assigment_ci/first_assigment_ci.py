@@ -30,7 +30,7 @@ def cumulative(probabilities):
     return cumulative_probabilities
 #select bt routtle by cummaltive porobabilties and switch for printing random or not 
 
-def select_byrouttle2(chromosomes, cumulative_probabilities,switch):
+def select_byrouttle(chromosomes, cumulative_probabilities,switch):
   
     random_routtle= random.random()
     if switch==True:
@@ -91,8 +91,8 @@ def genetic_algorithm(runs, generations, ch_length, pcross, pmut,cross_over_poin
             while len(new_population) < len(chromosomes):
                 selection = []
         
-                selection.append(select_byrouttle2(chromosomes, cummulative_prob,False))
-                selection.append(select_byrouttle2(chromosomes, cummulative_prob,False))
+                selection.append(select_byrouttle(chromosomes, cummulative_prob,False))
+                selection.append(select_byrouttle(chromosomes, cummulative_prob,False))
                 offspring = crossover(selection[0], selection[1], pcross, cross_over_point)
                 new_population.append(mutation(offspring[0], pmut))
                 new_population.append(mutation(offspring[1], pmut))
@@ -139,7 +139,7 @@ while True:
      cumulatives =cumulative( probality)
      selection=[]
      for i in range(2):
-       selection.append(select_byrouttle2(chromose,cumulatives,True))
+       selection.append(select_byrouttle(chromose,cumulatives,True))
 
        print ("  parent ",i+1 ," for making mutation and cross over ",selection[i])
      eltisim=elitism(chromose,fitness)
@@ -178,7 +178,7 @@ while True:
      print("4:generate 2 random numbers to select 2 chromosomes to become parents according to their cumulative relative fitness")
      print("5:generate their offspring using one point crossover with crossover point and pcross")
      print("6:use mutation on the offspring bits using pmut")
-     print("7:add the 2 offsprings to the population")
+     print("7:add the 2 offsprings to the new population")
      print("8: use elitism to choose best 2 individuals to keep them on next population ")
      print("9:-repeat numbers of runs  from step 2 for M generations\n\n\n ")
     
